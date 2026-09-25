@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campanha Dia dos Professores · Sr. Pão de Mel · ēdhen studio brand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   BASE — mesmo sistema visual do cronograma de referência (cores, fontes,
+   cursor, reveal on scroll). Apenas o conteúdo muda a partir daqui.
+   ========================================================================== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1a18;
+  --creme:#eee9e0;
+  --creme2:#e8e2d6;
+  --ouro:#b89a6a;
+  --ouro-l:#d4b98a;
+  --surface:#252624;
+  --surface2:#1e1e1c;
+  --muted:rgba(238,233,224,.42);
+  --div:rgba(184,154,106,.15);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--surface2);color:var(--creme);font-family:var(--sans);font-weight:300;overflow-x:hidden;cursor:none}
+
+/* CURSOR */
+#cursor{position:fixed;width:7px;height:7px;background:var(--ouro);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .35s cubic-bezier(.16,1,.3,1),height .35s cubic-bezier(.16,1,.3,1)}
+#cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(184,154,106,.35);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .6s cubic-bezier(.16,1,.3,1),height .6s cubic-bezier(.16,1,.3,1),border-color .4s}
+#cursor-ring.hover{width:52px;height:52px;border-color:rgba(184,154,106,.6)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.reveal.vis{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.22s}.d3{transition-delay:.34s}.d4{transition-delay:.46s}
+
+.divider{width:100%;height:1px;background:linear-gradient(to right,transparent,rgba(184,154,106,.25),transparent)}
+.eyebrow{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--ouro);margin-bottom:1.5rem;display:block}
+.eyebrow.on-light{color:#8a7a5c}
+
+/* ==========================================================================
+   NAV — navegação por capítulos, discreta, acompanha o scroll
+   ========================================================================== */
+#chapNav{position:fixed;right:2.4vw;top:50%;transform:translateY(-50%);z-index:500;display:flex;flex-direction:column;gap:1.1rem}
+#chapNav a{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:var(--muted);font-size:10px;letter-spacing:.15em;text-transform:uppercase;transition:color .35s ease}
+#chapNav a .dot{width:5px;height:5px;border-radius:50%;background:rgba(184,154,106,.35);transition:all .35s ease;flex-shrink:0}
+#chapNav a .lbl{opacity:0;max-width:0;overflow:hidden;white-space:nowrap;transition:opacity .35s ease,max-width .35s ease}
+#chapNav a:hover .lbl,#chapNav a.active .lbl{opacity:1;max-width:160px;margin-left:.1rem}
+#chapNav a.active{color:var(--ouro-l)}
+#chapNav a.active .dot{background:var(--ouro);width:7px;height:7px;box-shadow:0 0 0 3px rgba(184,154,106,.18)}
+@media(max-width:900px){#chapNav{display:none}}
+
+/* mobile chapter bar */
+#chapBar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:500;background:rgba(30,30,28,.92);backdrop-filter:blur(6px);border-top:1px solid var(--div);overflow-x:auto;white-space:nowrap;padding:.85rem 1rem}
+#chapBar a{display:inline-block;color:var(--muted);font-size:10px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;margin-right:1.4rem}
+#chapBar a.active{color:var(--ouro-l)}
+@media(max-width:900px){#chapBar{display:block}body{padding-bottom:3.2rem}}
+
+/* ==========================================================================
+   HERO
+   ========================================================================== */
+.hero{min-height:96vh;background:var(--surface2);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:hidden;padding:9vh 6vw;position:relative}
+.hero-icon{width:1px;height:64px;background:linear-gradient(to bottom,transparent,var(--ouro));margin:0 auto 2.2rem;opacity:0;transition:opacity 1.4s ease}
+.hero-icon.vis{opacity:1}
+.hero-tag{font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--ouro);margin-bottom:1.4rem;opacity:0;transition:opacity 1.2s .4s ease}
+.hero-tag.vis{opacity:1}
+.hero-title{font-family:var(--serif);font-size:clamp(2.4rem,7vw,5.2rem);font-weight:300;letter-spacing:-.02em;line-height:1.05;opacity:0;transform:translateY(18px);transition:opacity 1.4s .2s ease,transform 1.4s .2s ease}
+.hero-title.vis{opacity:1;transform:translateY(0)}
+.hero-brand{font-size:12px;letter-spacing:.12em;color:var(--creme2);margin-top:1.8rem;opacity:0;transition:opacity 1.2s .6s ease}
+.hero-brand.vis{opacity:1}
+.hero-dates{margin-top:2.6rem;display:flex;gap:2.2rem;flex-wrap:wrap;justify-content:center;opacity:0;transition:opacity 1.2s .8s ease}
+.hero-dates.vis{opacity:1}
+.hero-date-item{text-align:left;border-left:1px solid var(--div);padding-left:1rem}
+.hero-date-item .lbl{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--ouro);margin-bottom:.4rem}
+.hero-date-item .val{font-family:var(--serif);font-size:1.15rem;font-style:italic;color:var(--creme2)}
+
+.scroll-hint{position:absolute;bottom:3.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.75rem;opacity:0;transition:opacity 1.2s 1.3s ease}
+.scroll-hint.vis{opacity:1}
+.scroll-mouse{width:22px;height:36px;border:1px solid rgba(184,154,106,.45);border-radius:11px;display:flex;justify-content:center;padding-top:6px;cursor:pointer}
+.scroll-dot{width:3px;height:8px;background:var(--ouro);border-radius:2px;animation:scrollBounce 2.2s ease-in-out infinite}
+@keyframes scrollBounce{0%,100%{transform:translateY(0);opacity:1}60%{transform:translateY(10px);opacity:.2}}
+.scroll-label{font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:rgba(184,154,106,.5)}
+
+/* ==========================================================================
+   02 — A IDEIA DA CAMPANHA
+   ========================================================================== */
+.s-ideia{background:var(--creme2);color:var(--ink);padding:12vh 6vw;text-align:center}
+.s-ideia h2{font-family:var(--serif);font-size:clamp(2rem,4vw,3.6rem);font-weight:300;line-height:1.2;letter-spacing:-.01em;max-width:820px;margin:0 auto 3rem}
+.s-ideia h2 em{font-style:italic;color:#96784a}
+.ideia-flow{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:.8rem;margin-bottom:4rem}
+.ideia-flow span{font-family:var(--serif);font-size:clamp(.95rem,1.6vw,1.3rem);letter-spacing:.02em;color:#5a5650}
+.ideia-flow .arrow{color:#b89a6a;font-style:italic}
+.ideia-flow strong{font-weight:500;color:var(--ink)}
+.ideia-body{max-width:620px;margin:0 auto;text-align:left}
+.ideia-body p{font-size:15px;line-height:1.9;color:#3c372f;margin-bottom:1.2rem}
+.ideia-quotes{display:flex;flex-direction:column;gap:.9rem;margin:2.2rem 0;padding-left:1.6rem;border-left:2px solid #b89a6a}
+.ideia-quotes p{font-family:var(--serif);font-style:italic;font-size:1.25rem;color:#7a5f38;margin:0}
+
+/* ==========================================================================
+   03 — JORNADA
+   ========================================================================== */
+.s-jornada{background:var(--surface);padding:12vh 6vw}
+.s-jornada h2{font-family:var(--serif);font-size:clamp(1.9rem,3.4vw,3.6rem);font-weight:300;letter-spacing:-.015em;margin-bottom:1.2rem;max-width:760px}
+.s-jornada h2 em{font-style:italic;color:var(--ouro-l)}
+.s-jornada>.lead{font-size:14px;line-height:1.9;color:var(--muted);max-width:600px;margin-bottom:4.5rem}
+.jornada-steps{max-width:640px;margin:0 auto}
+.j-step{display:flex;align-items:center;gap:1.6rem;padding:1.4rem 0;border-bottom:1px solid var(--div)}
+.j-step:last-child{border-bottom:none}
+.j-num{font-family:var(--serif);font-size:12px;color:var(--ouro);letter-spacing:.2em;font-style:italic;width:28px;flex-shrink:0}
+.j-text{font-family:var(--serif);font-size:clamp(1.15rem,2.4vw,1.6rem);font-weight:300;color:var(--creme2)}
+.j-arrow{text-align:center;color:rgba(184,154,106,.4);font-size:13px;padding:.2rem 0}
+
+/* ==========================================================================
+   04 — MAPA COMERCIAL
+   ========================================================================== */
+.s-mapa{background:var(--surface2);padding:12vh 6vw}
+.s-mapa h2{font-family:var(--serif);font-size:clamp(1.9rem,3.4vw,3.6rem);font-weight:300;letter-spacing:-.015em;margin-bottom:4rem;max-width:760px}
+.s-mapa h2 em{font-style:italic;color:var(--ouro-l)}
+.mapa-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5px;background:var(--div);border:1px solid var(--div)}
+.mapa-phase{background:var(--surface2);padding:2.6rem 2.4rem}
+.mapa-phase .ph-range{font-family:var(--serif);font-style:italic;color:var(--ouro-l);font-size:1.1rem;margin-bottom:.4rem}
+.mapa-phase .ph-name{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro);margin-bottom:1.4rem}
+.mapa-phase .ph-obj{font-size:13px;line-height:1.8;color:var(--creme2);margin-bottom:1.6rem}
+.mapa-flow{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.mapa-flow span{font-size:11px;letter-spacing:.05em;color:var(--muted)}
+.mapa-flow .arrow{color:var(--ouro)}
+@media(max-width:900px){.mapa-grid{grid-template-columns:1fr}}
+
+/* ==========================================================================
+   05 — CALENDÁRIO INTERATIVO
+   ========================================================================== */
+.s-cal{background:var(--surface);padding:12vh 6vw}
+.s-cal h2{font-family:var(--serif);font-size:clamp(2rem,3.6vw,3.8rem);font-weight:300;line-height:1.15;letter-spacing:-.015em;margin-bottom:1.2rem;max-width:820px}
+.s-cal h2 em{font-style:italic;color:var(--ouro-l)}
+.s-cal>.lead{font-size:14px;line-height:1.9;color:var(--muted);max-width:640px;margin-bottom:3rem}
+
+.filters{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:3.5rem;overflow-x:auto;padding-bottom:.3rem}
+.filter-btn{font-family:var(--sans);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);background:transparent;border:1px solid var(--div);padding:.65rem 1.2rem;cursor:pointer;white-space:nowrap;transition:all .3s ease}
+.filter-btn:hover{color:var(--creme);border-color:rgba(184,154,106,.4)}
+.filter-btn.active{color:var(--surface2);background:var(--ouro);border-color:var(--ouro)}
+
+.cal-list{display:flex;flex-direction:column;border-top:1px solid var(--div)}
+.cal-card{border-bottom:1px solid var(--div);transition:opacity .35s ease,max-height .35s ease}
+.cal-card.hide{display:none}
+.cal-head{display:grid;grid-template-columns:auto 1fr auto;gap:1.4rem;align-items:center;padding:1.8rem 0;cursor:pointer}
+.cal-date-col{display:flex;flex-direction:column;gap:.5rem;min-width:92px}
+.cal-day{font-family:var(--serif);font-size:1.5rem;font-style:italic;color:var(--ouro-l)}
+.cal-status{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:.35rem}
+.cal-status .sdot{width:6px;height:6px;border-radius:50%;border:1px solid var(--ouro);flex-shrink:0}
+.cal-status.st-fazer .sdot{background:transparent}
+.cal-status.st-producao .sdot{background:rgba(184,154,106,.35)}
+.cal-status.st-aprovacao .sdot{background:rgba(184,154,106,.65)}
+.cal-status.st-aprovado .sdot{background:var(--ouro)}
+.cal-status.st-publicado .sdot{background:var(--ouro);box-shadow:0 0 0 2px rgba(184,154,106,.25)}
+.cal-mid{min-width:0}
+.cal-meta{display:flex;gap:.7rem;align-items:center;margin-bottom:.5rem;flex-wrap:wrap}
+.cal-format{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--ouro);border:1px solid rgba(184,154,106,.4);padding:3px 10px}
+.cal-platform{font-size:10px;letter-spacing:.08em;color:var(--muted)}
+.cal-title{font-family:var(--serif);font-size:clamp(1.15rem,2.2vw,1.5rem);font-weight:300;color:var(--creme);line-height:1.3}
+.cal-objective{font-size:12px;color:var(--muted);margin-top:.4rem;max-width:520px;line-height:1.6}
+.cal-icon{font-size:24px;color:var(--ouro);font-family:var(--serif);font-style:italic;line-height:1;transition:transform .5s cubic-bezier(.16,1,.3,1);flex-shrink:0}
+.cal-card.open .cal-icon{transform:rotate(45deg)}
+
+.cal-body{max-height:0;overflow:hidden;transition:max-height .6s cubic-bezier(.16,1,.3,1)}
+.cal-card.open .cal-body{max-height:3200px}
+.cal-body-inner{padding:0 0 2.6rem;display:grid;gap:1.6rem;max-width:760px}
+.cal-field .field-label{display:block;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--ouro);margin-bottom:.6rem}
+.cal-field p{font-size:13px;line-height:1.85;color:var(--creme2);white-space:pre-line}
+.cal-field p.script{font-family:var(--serif);font-style:italic;font-size:14.5px;line-height:1.9;color:var(--creme)}
+.cal-field ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.cal-field ul li{font-size:13px;line-height:1.7;color:var(--creme2);padding-left:1rem;position:relative}
+.cal-field ul li::before{content:"—";position:absolute;left:0;color:var(--ouro)}
+.cal-cta{display:inline-block;margin-top:.2rem;font-size:11px;letter-spacing:.12em;color:var(--ouro-l);font-style:italic;font-family:var(--serif)}
+
+@media(max-width:700px){
+  .cal-head{grid-template-columns:1fr auto;grid-template-areas:"date icon" "mid mid"}
+  .cal-date-col{grid-area:date;flex-direction:row;align-items:center;gap:.8rem}
+  .cal-icon{grid-area:icon}
+  .cal-mid{grid-area:mid;margin-top:.9rem}
+}
+
+/* ==========================================================================
+   06 — PRINCÍPIO ESTRATÉGICO / FECHAMENTO
+   ========================================================================== */
+.s-close{background:var(--surface2);text-align:center;padding:14vh 6vw}
+.s-close .eyebrow{margin-bottom:2rem}
+.s-close h2{font-family:var(--serif);font-size:clamp(1.8rem,3.8vw,3.4rem);font-weight:300;line-height:1.3;max-width:760px;margin:0 auto}
+.s-close h2 em{font-style:italic;color:var(--ouro-l)}
+.close-quotes{margin:3rem auto;display:flex;flex-direction:column;gap:.9rem}
+.close-quotes p{font-family:var(--serif);font-style:italic;font-size:clamp(1.1rem,2.2vw,1.5rem);color:var(--creme2)}
+.close-flow{margin-top:2.5rem;font-size:12px;letter-spacing:.1em;color:var(--ouro-l);display:flex;justify-content:center;flex-wrap:wrap;gap:.5rem}
+.close-flow .arrow{color:rgba(184,154,106,.5)}
+
+footer{background:var(--surface2);border-top:1px solid var(--div);padding:1.75rem 6vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem}
+footer .brand{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--ouro-l)}
+footer .copy{font-size:10px;color:rgba(238,233,224,.25);letter-spacing:.1em}
+
+@media(max-width:600px){
+  body{cursor:auto}
+  #cursor,#cursor-ring{display:none}
+  footer{flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav id="chapNav">
+  <a href="#hero" data-target="hero"><span class="dot"></span><span class="lbl">Início</span></a>
+  <a href="#ideia" data-target="ideia"><span class="dot"></span><span class="lbl">A ideia</span></a>
+  <a href="#jornada" data-target="jornada"><span class="dot"></span><span class="lbl">Jornada</span></a>
+  <a href="#mapa" data-target="mapa"><span class="dot"></span><span class="lbl">Mapa comercial</span></a>
+  <a href="#calendario" data-target="calendario"><span class="dot"></span><span class="lbl">Calendário</span></a>
+  <a href="#fechamento" data-target="fechamento"><span class="dot"></span><span class="lbl">Fechamento</span></a>
+</nav>
+<nav id="chapBar">
+  <a href="#hero" data-target="hero">Início</a>
+  <a href="#ideia" data-target="ideia">A ideia</a>
+  <a href="#jornada" data-target="jornada">Jornada</a>
+  <a href="#mapa" data-target="mapa">Mapa comercial</a>
+  <a href="#calendario" data-target="calendario">Calendário</a>
+  <a href="#fechamento" data-target="fechamento">Fechamento</a>
+</nav>
+
+<!-- 01 — HERO -->
+<section class="hero" id="hero">
+  <div class="hero-icon vis"></div>
+  <p class="hero-tag vis">Instagram &amp; WhatsApp</p>
+  <h1 class="hero-title vis">Campanha<br>Dia dos Professores</h1>
+  <p class="hero-brand vis">Sr. Pão de Mel · Setembro — Outubro 2026</p>
+  <div class="hero-dates vis">
+    <div class="hero-date-item">
+      <div class="lbl">Comercial</div>
+      <div class="val">29/09 → 10/10</div>
+    </div>
+    <div class="hero-date-item">
+      <div class="lbl">Institucional</div>
+      <div class="val">11/10 → 15/10</div>
+    </div>
+  </div>
+  <div class="scroll-hint" id="scrollHint">
+    <div class="scroll-mouse" id="scrollMouse"><div class="scroll-dot"></div></div>
+    <span class="scroll-label">rolar</span>
+  </div>
+</section>
+
+<!-- 02 — A IDEIA DA CAMPANHA -->
+<section class="s-ideia" id="ideia">
+  <span class="eyebrow on-light reveal">A ideia da campanha</span>
+  <h2 class="reveal d1">A campanha não começa vendendo.<br>Começa fazendo as pessoas <em>lembrarem.</em></h2>
+  <div class="ideia-flow reveal d2">
+    <strong>Memória</strong><span class="arrow">→</span><strong>Reconhecimento</strong><span class="arrow">→</span><strong>Significado</strong><span class="arrow">→</span><strong>Presente</strong><span class="arrow">→</span><strong>Homenagem</strong>
+  </div>
+  <div class="ideia-body reveal d3">
+    <div class="ideia-quotes">
+      <p>"Eu lembro."</p>
+      <p>"Agora eu entendo."</p>
+      <p>"Eu quero agradecer."</p>
+    </div>
+    <p>A campanha deve conduzir o público da nostalgia para o reconhecimento e, naturalmente, para o desejo de presentear.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 03 — JORNADA -->
+<section class="s-jornada" id="jornada">
+  <span class="eyebrow reveal">Jornada estratégica</span>
+  <h2 class="reveal d1">Do reconhecimento à <em>homenagem.</em></h2>
+  <p class="lead reveal d2">A jornada que conduz cada pessoa da lembrança até a escolha do presente — e, depois das vendas, até a homenagem final.</p>
+  <div class="jornada-steps reveal d3">
+    <div class="j-step"><span class="j-num">01 /</span><span class="j-text">Eu lembro.</span></div>
+    <div class="j-arrow">↓</div>
+    <div class="j-step"><span class="j-num">02 /</span><span class="j-text">Eu reconheço.</span></div>
+    <div class="j-arrow">↓</div>
+    <div class="j-step"><span class="j-num">03 /</span><span class="j-text">Eu entendo.</span></div>
+    <div class="j-arrow">↓</div>
+    <div class="j-step"><span class="j-num">04 /</span><span class="j-text">Eu quero agradecer.</span></div>
+    <div class="j-arrow">↓</div>
+    <div class="j-step"><span class="j-num">05 /</span><span class="j-text">Eu escolho o presente.</span></div>
+    <div class="j-arrow">↓</div>
+    <div class="j-step"><span class="j-num">06 /</span><span class="j-text">Eu homenageio.</span></div>
+  </div>
+</section>
+
+<!-- 04 — MAPA COMERCIAL -->
+<section class="s-mapa" id="mapa">
+  <span class="eyebrow reveal">Mapa comercial</span>
+  <h2 class="reveal d1">Duas fases, dois <em style="font-style:italic;color:var(--ouro-l)">objetivos.</em></h2>
+  <div class="mapa-grid reveal d2">
+    <div class="mapa-phase">
+      <div class="ph-range">29/09 → 10/10</div>
+      <div class="ph-name">Campanha comercial</div>
+      <p class="ph-obj">Objetivo: transformar reconhecimento em intenção de compra.</p>
+      <div class="mapa-flow">
+        <span>Memória</span><span class="arrow">→</span><span>Reconhecimento</span><span class="arrow">→</span><span>Significado</span><span class="arrow">→</span><span>Desejo</span><span class="arrow">→</span><span>Decisão</span><span class="arrow">→</span><span>Compra</span>
+      </div>
+    </div>
+    <div class="mapa-phase">
+      <div class="ph-range">11/10 → 15/10</div>
+      <div class="ph-name">Campanha institucional / emocional</div>
+      <p class="ph-obj">Objetivo: continuar a conversa mesmo depois do encerramento das vendas.</p>
+      <div class="mapa-flow">
+        <span>Reconhecimento</span><span class="arrow">→</span><span>Gratidão</span><span class="arrow">→</span><span>Homenagem</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 05 — CALENDÁRIO INTERATIVO -->
+<section class="s-cal" id="calendario">
+  <span class="eyebrow reveal">Calendário interativo</span>
+  <h2 class="reveal d1">De 29/09 a 15/10, cada peça<br>é um <em>conteúdo aberto.</em></h2>
+  <p class="lead reveal d2">Clique em qualquer data para abrir o conteúdo completo: conceito, roteiro, direção visual, Stories, WhatsApp, CTA e status.</p>
+
+  <div class="filters reveal d3">
+    <button class="filter-btn active" data-filter="todos">Todos</button>
+    <button class="filter-btn" data-filter="reel">Reels</button>
+    <button class="filter-btn" data-filter="carrossel">Carrosséis</button>
+    <button class="filter-btn" data-filter="stories">Stories</button>
+    <button class="filter-btn" data-filter="whatsapp">WhatsApp</button>
+  </div>
+
+  <div class="cal-list reveal d4">
+
+    <!-- 29/09 — REEL -->
+    <div class="cal-card" data-type="reel">
+      <div class="cal-head">
+        <div class="cal-date-col">
+          <span class="cal-day">29/09</span>
+          <span class="cal-status st-fazer"><span class="sdot"></span>A fazer</span>
+        </div>
+        <div class="cal-mid">
+          <div class="cal-meta"><span class="cal-format">Reel</span><span class="cal-platform">Instagram</span></div>
+          <h3 class="cal-title">O primeiro impacto — "Você se lembra?"</h3>
+          <p class="cal-objective">Abrir a campanha com impacto emocional e criar a primeira camada de nostalgia.</p>
+        </div>
+        <span class="cal-icon">+</span>
+      </div>
+      <div class="cal-body"><div class="cal-body-inner">
+        <div class="cal-field">
+          <span class="field-label">Conceito</span>
+          <p>Banco de imagem pode ser utilizado, mas de maneira editorial e muito pontual. Não mostrar uma professora durante 30 segundos. Começa com: uma lousa; som de giz; uma carteira; uma mão escrevendo.</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">Roteiro / Copy</span>
+          <p class="script">Você se lembra da sua primeira professora?
+
+Pausa.
+
+E daquele professor que acreditou em você?
+
+Daquele que teve paciência quando você não entendia?
+
+Daquele que fez uma matéria parecer interessante?
+
+Corte para preto.
+
+Talvez você não se lembre de tudo que eles ensinaram.
+Mas talvez ainda carregue algumas dessas lições.</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">Direção visual</span>
+          <p>Final: "Quem ensina, deixa marcas." / "Dia dos Professores — Sr. Pão de Mel"</p>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 29/09 — STORIES -->
+    <div class="cal-card" data-type="stories">
+      <div class="cal-head">
+        <div class="cal-date-col">
+          <span class="cal-day">29/09</span>
+          <span class="cal-status st-fazer"><span class="sdot"></span>A fazer</span>
+        </div>
+        <div class="cal-mid">
+          <div class="cal-meta"><span class="cal-format">Stories</span><span class="cal-platform">Instagram</span></div>
+          <h3 class="cal-title">A pergunta de abertura</h3>
+          <p class="cal-objective">Criar a primeira camada de nostalgia.</p>
+        </div>
+        <span class="cal-icon">+</span>
+      </div>
+      <div class="cal-body"><div class="cal-body-inner">
+        <div class="cal-field">
+          <span class="field-label">Roteiro / Copy</span>
+          <p class="script">Leide aparece falando diretamente:
+
+"Eu quero começar nossa campanha de Dia dos Professores fazendo uma pergunta para vocês: existe algum professor que marcou sua vida?"</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">Interação</span>
+          <p>Caixinha: "Qual professor você nunca esqueceu?"</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">Observações</span>
+          <p>Repostar algumas respostas.</p>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 30/09 — CARROSSEL -->
+    <div class="cal-card" data-type="carrossel">
+      <div class="cal-head">
+        <div class="cal-date-col">
+          <span class="cal-day">30/09</span>
+          <span class="cal-status st-fazer"><span class="sdot"></span>A fazer</span>
+        </div>
+        <div class="cal-mid">
+          <div class="cal-meta"><span class="cal-format">Carrossel</span><span class="cal-platform">Instagram</span></div>
+          <h3 class="cal-title">"Alguns professores a gente nunca esquece."</h3>
+        </div>
+        <span class="cal-icon">+</span>
+      </div>
+      <div class="cal-body"><div class="cal-body-inner">
+        <div class="cal-field">
+          <span class="field-label">Roteiro / Slides</span>
+          <ul>
+            <li>Slide 01 — Alguns professores a gente nunca esquece.</li>
+            <li>Slide 02 — Talvez porque tiveram paciência.</li>
+            <li>Slide 03 — Talvez porque acreditaram.</li>
+            <li>Slide 04 — Talvez porque enxergaram algo em nós antes mesmo de percebermos.</li>
+            <li>Slide 05 — Talvez porque ensinaram muito além da matéria.</li>
+            <li>Slide 06 — E é justamente por isso que a profissão de professor importa tanto.</li>
+            <li>Slide 07 — Porque aquilo que acontece dentro de uma sala de aula pode acompanhar uma pessoa por toda a vida.</li>
+            <li>Slide 08 — Quem ensina, deixa marcas.</li>
+          </ul>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 01/10 — STORIES -->
+    <div class="cal-card" data-type="stories">
+      <div class="cal-head">
+        <div class="cal-date-col">
+          <span class="cal-day">01/10</span>
+          <span class="cal-status st-fazer"><span class="sdot"></span>A fazer</span>
+        </div>
+        <div class="cal-mid">
+          <div class="cal-meta"><span class="cal-format">Stories</span><span class="cal-platform">Instagram</span></div>
+          <h3 class="cal-title">Ponte: nostalgia → sociedade</h3>
+        </div>
+        <span class="cal-icon">+</span>
+      </div>
+      <div class="cal-body"><div class="cal-body-inner">
+        <div class="cal-field">
+          <span class="field-label">Conceito</span>
+          <p>Ponte: nostalgia → sociedade.</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">Roteiro / Copy</span>
+          <p class="script">Leide: "Eu fiquei lendo as respostas de vocês ontem…"
+
+"E uma coisa me chamou muita atenção."
+
+"A maioria não falou da matéria que aquele professor ensinava."
+
+"Falou de como ele fez a pessoa se sentir."
+
+Pausa.
+
+"E acho que é exatamente aí que a gente entende a importância dessa profissão."</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">Interação</span>
+          <p>Enquete: "Você acha que professor transforma além da sala de aula?" — SIM / COM CERTEZA</p>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 02/10 — REEL -->
+    <div class="cal-card" data-type="reel">
+      <div class="cal-head">
+        <div class="cal-date-col">
+          <span class="cal-day">02/10</span>
+          <span class="cal-status st-fazer"><span class="sdot"></span>A fazer</span>
+        </div>
+        <div class="cal-mid">
+          <div class="cal-meta"><span class="cal-format">Reel</span><span class="cal-platform">Instagram</span></div>
+          <h3 class="cal-title">"O que um professor realmente ensina?"</h3>
+        </div>
+        <span class="cal-icon">+</span>
+      </div>
+      <div class="cal-body"><div class="cal-body-inner">
+        <div class="cal-field">
+          <span class="field-label">Conceito</span>
+          <p>Reel predominantemente tipográfico, com fotos/stock muito discretos.</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">Roteiro / Copy</span>
+          <p class="script">Matemática.
+Português.
+História.
+Ciências.
+
+Pausa.
+
+Mas também...
+
+persistência.
+pensamento crítico.
+disciplina.
+convivência.
+curiosidade.
+confiança.
+
+Final: "Professores não formam apenas alunos. Ajudam a formar pessoas."</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">Observações</span>
+          <p>Este é o momento institucional da campanha.</p>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 03/10 — STORIES -->
+    <div class="cal-card" data-type="stories">
+      <div class="cal-head">
+        <div class="cal-date-col">
+          <span class="cal-day">03/10</span>
+          <span class="cal-status st-fazer"><span class="sdot"></span>A fazer</span>
+        </div>
+        <div class="cal-mid">
+          <div class="cal-meta"><span class="cal-format">Stories</span><span class="cal-platform">Instagram</span></div>
+          <h3 class="cal-title">O teaser da coleção</h3>
+        </div>
+        <span class="cal-icon">+</span>
+      </div>
+      <div class="cal-body"><div class="cal-body-inner">
+        <div class="cal-field">
+          <span class="field-label">Roteiro / Copy</span>
+          <p class="script">Leide aparece: "E foi pensando nisso que criamos nossa coleção de Dia dos Professores."
+
+"Eu queria que fosse mais do que uma lembrancinha."
+
+"Queria que fosse um presente escolhido com intenção."</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">Direção visual</span>
+          <p>Ainda NÃO mostrar tudo. Mostrar apenas: detalhe da embalagem; laço; personalização; foto cortada.</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">CTA</span>
+          <p class="cal-cta">Sticker: "QUER VER?" — SIM</p>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 04/10 — REEL / REVELAÇÃO -->
+    <div class="cal-card" data-type="reel">
+      <div class="cal-head">
+        <div class="cal-date-col">
+          <span class="cal-day">04/10</span>
+          <span class="cal-status st-fazer"><span class="sdot"></span>A fazer</span>
+        </div>
+        <div class="cal-mid">
+          <div class="cal-meta"><span class="cal-format">Reel — Revelação</span><span class="cal-platform">Instagram</span></div>
+          <h3 class="cal-title">A coleção</h3>
+          <p class="cal-objective">Pedidos até 10/10.</p>
+        </div>
+        <span class="cal-icon">+</span>
+      </div>
+      <div class="cal-body"><div class="cal-body-inner">
+        <div class="cal-field">
+          <span class="field-label">Conceito</span>
+          <p>Agora entram as fotos profissionais. A força deve vir da fotografia.</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">Direção visual — sequência</span>
+          <ul>
+            <li>Produto 1</li>
+            <li>Produto 2</li>
+            <li>Detalhe</li>
+            <li>Personalização</li>
+            <li>Produto 3</li>
+            <li>Kit</li>
+            <li>Embalagem</li>
+          </ul>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">Roteiro / Copy</span>
+          <p class="script">Para aquela professora.
+Para aquele professor.
+
+Para quem ensinou.
+Incentivou.
+Acreditou.
+E deixou uma marca.
+
+Coleção Dia dos Professores.
+Pedidos até 10/10.</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">CTA</span>
+          <p class="cal-cta">Conheça a coleção →</p>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 05/10 — CARROSSEL -->
+    <div class="cal-card" data-type="carrossel whatsapp">
+      <div class="cal-head">
+        <div class="cal-date-col">
+          <span class="cal-day">05/10</span>
+          <span class="cal-status st-fazer"><span class="sdot"></span>A fazer</span>
+        </div>
+        <div class="cal-mid">
+          <div class="cal-meta"><span class="cal-format">Carrossel</span><span class="cal-platform">Instagram</span></div>
+          <h3 class="cal-title">"Não é só um presente."</h3>
+        </div>
+        <span class="cal-icon">+</span>
+      </div>
+      <div class="cal-body"><div class="cal-body-inner">
+        <div class="cal-field">
+          <span class="field-label">Roteiro / Slides</span>
+          <ul>
+            <li>Slide 01 — Não é só um presente.</li>
+            <li>Slide 02 — É um "obrigada por ensinar".</li>
+            <li>Slide 03 — É um "obrigada pela paciência".</li>
+            <li>Slide 04 — É um "obrigada por acreditar".</li>
+            <li>Slide 05 — É um "eu reconheço o que você faz".</li>
+            <li>Slide 06 — E talvez seja uma pequena forma de retribuir uma marca que ficou.</li>
+            <li>Slide 07 — Escolha quem você quer agradecer.</li>
+          </ul>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">CTA</span>
+          <p class="cal-cta">Coleção Dia dos Professores →</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">WhatsApp</span>
+          <p>Disparo: abertura da coleção. Momento da jornada: desejo → decisão inicial.</p>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 06/10 — REEL DE PRODUTO -->
+    <div class="cal-card" data-type="reel whatsapp">
+      <div class="cal-head">
+        <div class="cal-date-col">
+          <span class="cal-day">06/10</span>
+          <span class="cal-status st-fazer"><span class="sdot"></span>A fazer</span>
+        </div>
+        <div class="cal-mid">
+          <div class="cal-meta"><span class="cal-format">Reel de produto</span><span class="cal-platform">Instagram</span></div>
+          <h3 class="cal-title">Para quem ensina todos os dias</h3>
+          <p class="cal-objective">Pedidos até 10/10.</p>
+        </div>
+        <span class="cal-icon">+</span>
+      </div>
+      <div class="cal-body"><div class="cal-body-inner">
+        <div class="cal-field">
+          <span class="field-label">Conceito</span>
+          <p>Não precisa de professora real. Vídeo simples e bonito com: mãos; lousa; produto.</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">Direção visual — sequência</span>
+          <ul>
+            <li>A mão recebe a embalagem.</li>
+            <li>Abre.</li>
+            <li>Detalhe da personalização.</li>
+            <li>Produto.</li>
+            <li>Cartão.</li>
+          </ul>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">Roteiro / Copy</span>
+          <p class="script">"Para quem ensina todos os dias.
+Um presente pensado para ser entregue com significado.
+Coleção Dia dos Professores."
+
+Final: "Pedidos até 10/10."</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">WhatsApp</span>
+          <p>Fase de consideração e escolha (06–09/10).</p>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 07/10 — STORIES -->
+    <div class="cal-card" data-type="stories whatsapp">
+      <div class="cal-head">
+        <div class="cal-date-col">
+          <span class="cal-day">07/10</span>
+          <span class="cal-status st-fazer"><span class="sdot"></span>A fazer</span>
+        </div>
+        <div class="cal-mid">
+          <div class="cal-meta"><span class="cal-format">Stories</span><span class="cal-platform">Instagram</span></div>
+          <h3 class="cal-title">O dia da escolha</h3>
+        </div>
+        <span class="cal-icon">+</span>
+      </div>
+      <div class="cal-body"><div class="cal-body-inner">
+        <div class="cal-field">
+          <span class="field-label">Roteiro / Sequência de Stories</span>
+          <ul>
+            <li>Story 1 — Quem você vai presentear? Professora / Professor / Mais de um</li>
+            <li>Story 2 — É a professora que acompanhou seu filho este ano?</li>
+            <li>Story 3 — O professor que marcou uma fase?</li>
+            <li>Story 4 — Ou alguém que você mesmo nunca esqueceu?</li>
+            <li>Story 5 — Foto dos produtos: "Temos uma opção para transformar esse 'obrigada' em presente."</li>
+            <li>Story 6 — PEDIDOS ATÉ 10/10. Link.</li>
+          </ul>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">WhatsApp</span>
+          <p>Fase de consideração e escolha (06–09/10).</p>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 08/10 — REEL -->
+    <div class="cal-card" data-type="reel whatsapp">
+      <div class="cal-head">
+        <div class="cal-date-col">
+          <span class="cal-day">08/10</span>
+          <span class="cal-status st-fazer"><span class="sdot"></span>A fazer</span>
+        </div>
+        <div class="cal-mid">
+          <div class="cal-meta"><span class="cal-format">Reel</span><span class="cal-platform">Instagram</span></div>
+          <h3 class="cal-title">"Um dia, seu filho vai crescer."</h3>
+          <p class="cal-objective">Uma das peças mais emocionais da campanha.</p>
+        </div>
+        <span class="cal-icon">+</span>
+      </div>
+      <div class="cal-body"><div class="cal-body-inner">
+        <div class="cal-field">
+          <span class="field-label">Conceito</span>
+          <p>Banco de imagem bem econômico: criança escrevendo; mão de professora; caderno.</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">Roteiro / Copy</span>
+          <p class="script">"Um dia, ele talvez nem se lembre daquela atividade.
+Nem daquela prova.
+Nem daquela lição.
+
+Pausa.
+
+Mas pode se lembrar da pessoa que esteve ali.
+Que ensinou.
+Que incentivou.
+Que acreditou.
+
+É por isso que professores importam."
+
+Final: "Amanhã é o último dia para escolher o presente. Pedidos até 10/10."</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">WhatsApp</span>
+          <p>Fase de consideração e escolha (06–09/10).</p>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 09/10 — STORIES / PRÉ-ENCERRAMENTO -->
+    <div class="cal-card" data-type="stories whatsapp">
+      <div class="cal-head">
+        <div class="cal-date-col">
+          <span class="cal-day">09/10</span>
+          <span class="cal-status st-fazer"><span class="sdot"></span>A fazer</span>
+        </div>
+        <div class="cal-mid">
+          <div class="cal-meta"><span class="cal-format">Stories — Pré-encerramento</span><span class="cal-platform">Instagram</span></div>
+          <h3 class="cal-title">Reforço de decisão</h3>
+        </div>
+        <span class="cal-icon">+</span>
+      </div>
+      <div class="cal-body"><div class="cal-body-inner">
+        <div class="cal-field">
+          <span class="field-label">Observações</span>
+          <p>Usar este dia como reforço de decisão antes do encerramento comercial. Não criar uma nova campanha — usar os conteúdos já construídos para reforçar: produtos; personalização; prazo; escolha do presente; CTA.</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">Roteiro / Copy</span>
+          <p class="script">"Se você já sabe quem quer agradecer, amanhã é o último dia para escolher."</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">WhatsApp</span>
+          <p>Fase de consideração e escolha (06–09/10).</p>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 10/10 — ÚLTIMO DIA -->
+    <div class="cal-card" data-type="stories whatsapp">
+      <div class="cal-head">
+        <div class="cal-date-col">
+          <span class="cal-day">10/10</span>
+          <span class="cal-status st-fazer"><span class="sdot"></span>A fazer</span>
+        </div>
+        <div class="cal-mid">
+          <div class="cal-meta"><span class="cal-format">Stories — Último dia de vendas</span><span class="cal-platform">Instagram</span></div>
+          <h3 class="cal-title">Encerramento dos pedidos</h3>
+          <p class="cal-objective">Aqui não é uma peça emocional complexa — é conversão.</p>
+        </div>
+        <span class="cal-icon">+</span>
+      </div>
+      <div class="cal-body"><div class="cal-body-inner">
+        <div class="cal-field">
+          <span class="field-label">Roteiro / Sequência de Stories</span>
+          <ul>
+            <li>08h — ÚLTIMO DIA</li>
+            <li>11h — Produtos + preços.</li>
+            <li>14h — Personalização.</li>
+            <li>17h — Leide: "Passando para lembrar que hoje encerramos os pedidos da coleção."</li>
+            <li>20h — "Se você já pensou em alguém durante essa campanha, ainda dá tempo de escolher o presente."</li>
+            <li>22h — PEDIDOS ENCERRAM HOJE.</li>
+          </ul>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">WhatsApp</span>
+          <p>Último dia — disparo final de urgência para quem ainda não decidiu.</p>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 11/10 — STORIES -->
+    <div class="cal-card" data-type="stories">
+      <div class="cal-head">
+        <div class="cal-date-col">
+          <span class="cal-day">11/10</span>
+          <span class="cal-status st-fazer"><span class="sdot"></span>A fazer</span>
+        </div>
+        <div class="cal-mid">
+          <div class="cal-meta"><span class="cal-format">Stories</span><span class="cal-platform">Instagram</span></div>
+          <h3 class="cal-title">A venda acabou. A campanha não.</h3>
+          <p class="cal-objective">Fase: institucional / emocional.</p>
+        </div>
+        <span class="cal-icon">+</span>
+      </div>
+      <div class="cal-body"><div class="cal-body-inner">
+        <div class="cal-field">
+          <span class="field-label">Direção visual</span>
+          <p>Bastidores dos pedidos. Fotos dos produtos.</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">Roteiro / Copy</span>
+          <p class="script">"Agora nossos presentes começam a chegar às pessoas que ajudaram a construir tantas histórias."</p>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 12/10 — FEED -->
+    <div class="cal-card" data-type="feed">
+      <div class="cal-head">
+        <div class="cal-date-col">
+          <span class="cal-day">12/10</span>
+          <span class="cal-status st-fazer"><span class="sdot"></span>A fazer</span>
+        </div>
+        <div class="cal-mid">
+          <div class="cal-meta"><span class="cal-format">Feed — Foto profissional</span><span class="cal-platform">Instagram</span></div>
+          <h3 class="cal-title">Quem ensina, deixa marcas</h3>
+        </div>
+        <span class="cal-icon">+</span>
+      </div>
+      <div class="cal-body"><div class="cal-body-inner">
+        <div class="cal-field">
+          <span class="field-label">Roteiro / Legenda</span>
+          <p class="script">"Alguns presentes são entregues em poucos minutos.
+Mas o que eles representam pode permanecer por muitos anos.
+
+Quem ensina, deixa marcas."</p>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 13/10 — STORIES -->
+    <div class="cal-card" data-type="stories">
+      <div class="cal-head">
+        <div class="cal-date-col">
+          <span class="cal-day">13/10</span>
+          <span class="cal-status st-fazer"><span class="sdot"></span>A fazer</span>
+        </div>
+        <div class="cal-mid">
+          <div class="cal-meta"><span class="cal-format">Stories</span><span class="cal-platform">Instagram</span></div>
+          <h3 class="cal-title">Agradecimento a quem escolheu presentear</h3>
+        </div>
+        <span class="cal-icon">+</span>
+      </div>
+      <div class="cal-body"><div class="cal-body-inner">
+        <div class="cal-field">
+          <span class="field-label">Roteiro / Copy</span>
+          <p class="script">Leide falando: "Eu queria aproveitar esses dias antes do Dia dos Professores para agradecer também a cada pessoa que escolheu o Sr. Pão de Mel para fazer essa homenagem."
+
+Mostrar pedidos.
+
+"Porque no final, essa campanha nunca foi só sobre presentes."
+"Foi sobre reconhecer."</p>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 14/10 — CARROSSEL -->
+    <div class="cal-card" data-type="carrossel">
+      <div class="cal-head">
+        <div class="cal-date-col">
+          <span class="cal-day">14/10</span>
+          <span class="cal-status st-fazer"><span class="sdot"></span>A fazer</span>
+        </div>
+        <div class="cal-mid">
+          <div class="cal-meta"><span class="cal-format">Carrossel</span><span class="cal-platform">Instagram</span></div>
+          <h3 class="cal-title">"Para todos os professores que..."</h3>
+        </div>
+        <span class="cal-icon">+</span>
+      </div>
+      <div class="cal-body"><div class="cal-body-inner">
+        <div class="cal-field">
+          <span class="field-label">Roteiro / Slides</span>
+          <ul>
+            <li>Slide 01 — Para todos os professores que...</li>
+            <li>Slide 02 — explicam mais uma vez.</li>
+            <li>Slide 03 — acreditam quando ninguém mais acredita.</li>
+            <li>Slide 04 — celebram pequenas conquistas.</li>
+            <li>Slide 05 — ensinam muito além da matéria.</li>
+            <li>Slide 06 — ajudam a formar a próxima geração.</li>
+            <li>Slide 07 — Obrigada por deixar marcas.</li>
+          </ul>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 15/10 — REEL / POST FINAL -->
+    <div class="cal-card" data-type="reel">
+      <div class="cal-head">
+        <div class="cal-date-col">
+          <span class="cal-day">15/10</span>
+          <span class="cal-status st-fazer"><span class="sdot"></span>A fazer</span>
+        </div>
+        <div class="cal-mid">
+          <div class="cal-meta"><span class="cal-format">Reel / Post final</span><span class="cal-platform">Instagram</span></div>
+          <h3 class="cal-title">Dia dos Professores — peça-manifesto</h3>
+          <p class="cal-objective">Sem venda.</p>
+        </div>
+        <span class="cal-icon">+</span>
+      </div>
+      <div class="cal-body"><div class="cal-body-inner">
+        <div class="cal-field">
+          <span class="field-label">Direção visual</span>
+          <p>Imagem forte de produto + lousa / mão / material escolar.</p>
+        </div>
+        <div class="cal-field">
+          <span class="field-label">Roteiro / Copy</span>
+          <p class="script">A TODOS QUE ENSINAM:
+
+Vocês ensinam o presente.
+Influenciam o futuro.
+E deixam marcas que muitas vezes só serão percebidas anos depois.
+
+Obrigada por cada pergunta respondida.
+Cada tentativa incentivada.
+Cada conquista celebrada.
+Cada criança que vocês ajudaram a acreditar que poderia.
+
+Feliz Dia dos Professores.
+Sr. Pão de Mel</p>
+        </div>
+      </div></div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 06 — FECHAMENTO / PRINCÍPIO ESTRATÉGICO -->
+<section class="s-close" id="fechamento">
+  <span class="eyebrow reveal">Princípio estratégico</span>
+  <h2 class="reveal d1">Não é sobre vender um presente.<br>É sobre criar um <em>motivo para agradecer.</em></h2>
+  <div class="close-quotes reveal d2">
+    <p>"Eu lembro."</p>
+    <p>"Agora eu entendo."</p>
+    <p>"Eu quero agradecer."</p>
+  </div>
+  <div class="close-flow reveal d3">
+    <span>Memória</span><span class="arrow">→</span><span>Reconhecimento</span><span class="arrow">→</span><span>Significado</span><span class="arrow">→</span><span>Presente</span><span class="arrow">→</span><span>Homenagem</span>
+  </div>
+</section>
+
+<footer>
+  <span class="brand">ēdhen studio brand</span>
+  <span class="copy">Sr. Pão de Mel · Campanha Dia dos Professores · 2026</span>
+</footer>
+
+<script>
+/* ==========================================================================
+   CURSOR CUSTOMIZADO
+   ========================================================================== */
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+window.addEventListener('mousemove', e=>{
+  cursor.style.left = e.clientX+'px'; cursor.style.top = e.clientY+'px';
+  ring.style.left = e.clientX+'px'; ring.style.top = e.clientY+'px';
+});
+document.querySelectorAll('a, button, .cal-head').forEach(el=>{
+  el.addEventListener('mouseenter', ()=>ring.classList.add('hover'));
+  el.addEventListener('mouseleave', ()=>ring.classList.remove('hover'));
+});
+
+/* ==========================================================================
+   REVEAL ON SCROLL
+   ========================================================================== */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){ entry.target.classList.add('vis'); }
+  });
+},{threshold:.12});
+revealEls.forEach(el=>io.observe(el));
+
+/* ==========================================================================
+   SCROLL HINT
+   ========================================================================== */
+const scrollMouse = document.getElementById('scrollMouse');
+const scrollHint = document.getElementById('scrollHint');
+if(scrollMouse){
+  scrollMouse.addEventListener('click', ()=>{
+    document.getElementById('ideia').scrollIntoView({behavior:'smooth'});
+  });
+}
+window.addEventListener('scroll', ()=>{
+  if(scrollHint) scrollHint.style.opacity = window.scrollY > 80 ? '0' : '1';
+});
+
+/* ==========================================================================
+   ACCORDION — calendário interativo
+   ========================================================================== */
+document.querySelectorAll('.cal-head').forEach(head=>{
+  head.addEventListener('click', ()=>{
+    head.closest('.cal-card').classList.toggle('open');
+  });
+  head.setAttribute('tabindex','0');
+  head.setAttribute('role','button');
+  head.addEventListener('keydown', e=>{
+    if(e.key==='Enter' || e.key===' '){ e.preventDefault(); head.click(); }
+  });
+});
+
+/* ==========================================================================
+   FILTROS DE CONTEÚDO
+   ========================================================================== */
+const filterBtns = document.querySelectorAll('.filter-btn');
+const calCards = document.querySelectorAll('.cal-card');
+filterBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    filterBtns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    calCards.forEach(card=>{
+      const types = card.dataset.type.split(' ');
+      if(f === 'todos' || types.includes(f)){
+        card.classList.remove('hide');
+      } else {
+        card.classList.add('hide');
+      }
+    });
+  });
+});
+
+/* ==========================================================================
+   NAVEGAÇÃO — capítulo ativo conforme scroll
+   ========================================================================== */
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('#chapNav a, #chapBar a');
+const navIo = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      navLinks.forEach(link=>{
+        link.classList.toggle('active', link.dataset.target === entry.target.id);
+      });
+    }
+  });
+},{rootMargin:'-45% 0px -45% 0px'});
+sections.forEach(sec=>navIo.observe(sec));
+</script>
+
+</body>
+</html>
